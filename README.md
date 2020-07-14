@@ -21,5 +21,6 @@ let battery = new BatteryGauge(2, 6, 12.7, 11.5, div, 1, 'red','blue');
 ## Drawing the battery  
 Once you have declared your battery object, you may draw the battery using the update function as below:  
 ```
-battery.update
+battery.update(voltage)
 ```
+* voltage - The voltage of your battery
