@@ -13,7 +13,8 @@ let battery = new BatteryGauge(Scale, Divisions, ChargedVoltage, DischargedVolta
 * StrokeWidth - The width of the outline of the battery (default is 0.5)  
 * StrokeColour - The colour of the outline of the battery (default is black)
 * BgColour - The background colour of the rectangle encapsulating the battery bars (default is white)  
-e.g.
+  
+For example:
 ```
 let div = document.getElementById("yourDivNameHere");
 let battery = new BatteryGauge(2, 6, 12.7, 11.5, div, 1, 'red','blue');
@@ -23,4 +24,7 @@ Once you have declared your battery object, you may draw the battery using the u
 ```
 battery.update(voltage)
 ```
-* voltage - The voltage of your battery
+* voltage - The voltage of your battery  
+  
+For example, with the range given in the first example when initialising the BatteryGauge object, a voltage value of 12.1 will display the following:  
+![50% Battery](battery.png)
