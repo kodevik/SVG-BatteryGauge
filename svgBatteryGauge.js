@@ -2,15 +2,15 @@
 SVGBatteryGauge - by Viktor Sarychkin
 */
 //Constructor
-function BatteryGauge(Scale, Divisions, ChargedVoltage, DischargedVoltage, Div, StrokeWidth=0.5, StrokeColour='black', BgColour='white'){
-    scale = Scale;
-    divisions = Divisions;
-    chargedVoltage = ChargedVoltage;
-    dischargedVoltage = DischargedVoltage;
+function BatteryGauge(Div, Options){
+    scale = Options.scale;
+    divisions = Options.divisions;
+    chargedVoltage = Options.chargedVoltage;
+    dischargedVoltage = Options.dischargedVoltage;
     div = Div;
-    strokeWidth = StrokeWidth;
-    strokeColour = StrokeColour;
-    bgColour = BgColour;
+    strokeWidth = Options.strokeWidth;
+    strokeColour = Options.strokeColour;
+    bgColour = Options.bgColour;
 }
 //Convert percentage to colour
 BatteryGauge.prototype.numToColour = function(num){
@@ -62,11 +62,12 @@ BatteryGauge.prototype.update = function(voltage){
     for (i=skip; i < divisions; i++){ // iterating through the range between skip and divisions
         var y = 7.5+distance*i; // y value of the rectangle, with y:7.5px being the y coordinate of the topmost bar at 100%
         if (i==skip){
-            svgBars += '<g><rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" /><text style="font-family: Arial; font-size: 3px" x="50%" y="'+(y+4)+'" text-anchor="middle">'+percent+'%</text></g>'; // putting the percentage value in the top bar
+            svgBars += '<g><rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" /><text id="top" style="font-family: Arial; font-size: 3px" x="50%" y="'+(y+(5/divisions)*4+0.5)+'" text-anchor="middle">'+percent+'%</text></g>'; // putting the percentage value in the top bar
         }
         else{
             svgBars += '<rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" />';
         }
     }
+	svgBars += '<use xlink:href="#top"/>'
     this.drawBattery(svgBars); // draw the battery with the percentage bars
 }
