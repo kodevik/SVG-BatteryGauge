@@ -11,6 +11,7 @@ function BatteryGauge(Div, Options){
     strokeWidth = Options.strokeWidth;
     strokeColour = Options.strokeColour;
     bgColour = Options.bgColour;
+    mode = Options.mode;
 }
 //Convert percentage to colour
 BatteryGauge.prototype.numToColour = function(num){
@@ -49,15 +50,21 @@ BatteryGauge.prototype.drawBattery = function(Extra = ""){
     div.innerHTML = divSvgContent; // write content to the div
 }
 // Converting a figure for voltage to a percentage given a range
-BatteryGauge.prototype.voltToPercentage = function(volts, chrg, dschrg){
-    percentage = (volts-dschrg)/(chrg-dschrg)*100>100 ? 100 : (volts-dschrg)/(chrg-dschrg)*100<0 ? 0 : (volts-dschrg)/(chrg-dschrg)*100;
-    return Math.round(percentage); // return rounded value for percentage
+BatteryGauge.prototype.voltToPercentage = function(volts, mode=''){
+    var percentage = 0;
+    if(mode=='12v_LiFePO4'){
+        percentage = volts>=13.8 ? 100 : 13.8>volts && volts>13.5 ? 99 : (volts-11.2)/(13.5-11.2)*99<0 ? 0 : (volts-11.2)/(13.5-11.2)*99; //fully charged LiFePO4 is around 14.4v but anything above 13.8v can count
+    }
+    else if (mode=='12v_Lead'){
+        percentage = (volts-11.5)/(12.7-11.5)*100>100 ? 100 : (volts-11.5)/(12.7-11.5)*100<0 ? 0 : (volts-11.5)/(12.7-11.5)*100; // fully linear range between 11.5v and 12.7v for lead-acid battery
+    }
+    return Math.round(percentage);
 }
 BatteryGauge.prototype.update = function(voltage){
     var svgBars = ''; // empty string for svg content to be appended to
     var distance = 35.5/divisions; // distance between percentage bars is the height of the battery at 1x scale divided by the number of bars intended
     var rectHeight = distance-0.5; // height of each percentage bar is the distance between them with 0.5px taken off for a border
-    var percent = this.voltToPercentage(voltage, chargedVoltage, dischargedVoltage); // converting the voltage given to a percentage
+    var percent = this.voltToPercentage(voltage, mode); // converting the voltage given to a percentage
     var skip = Math.floor(divisions - divisions*percent/100); // how many bars to skip drawing to show percentage
     for (i=skip; i < divisions; i++){ // iterating through the range between skip and divisions
         var y = 7.5+distance*i; // y value of the rectangle, with y:7.5px being the y coordinate of the topmost bar at 100%
@@ -68,6 +75,6 @@ BatteryGauge.prototype.update = function(voltage){
             svgBars += '<rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" />';
         }
     }
-	svgBars += '<use xlink:href="#top"/>'
+	svgBars += '<use xlink:href="#top"/>'; // bring text to front
     this.drawBattery(svgBars); // draw the battery with the percentage bars
 }

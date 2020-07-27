@@ -14,6 +14,7 @@ let battery = new BatteryGauge(Div, Options);
     * strokeWidth - The thickness of the outline of the battery.
     * strokeColour - The colour of the outline of the battery.
     * bgColour - The background colour of the battery
+    * mode - The mode for calculating the battery percentage, either '12v_LiFePO4' or '12v_Lead'
 
 For example:
 ```
@@ -25,7 +26,8 @@ let options = {
     dischargedVoltage : 11.5,
     strokeWidth : 0.5,
     strokeColour : 'black',
-    bgColour : 'white'
+    bgColour : 'white',
+    mode : '12v_Lead'
 }
 ```  
 ## Drawing the battery  
