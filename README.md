@@ -22,8 +22,6 @@ let div = document.getElementById("battery");
 let options = {
     scale : 2,
     divisions : 5,
-    chargedVoltage : 12.7,
-    dischargedVoltage : 11.5,
     strokeWidth : 0.5,
     strokeColour : 'black',
     bgColour : 'white',

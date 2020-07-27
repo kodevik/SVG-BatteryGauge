@@ -5,8 +5,6 @@ SVGBatteryGauge - by Viktor Sarychkin
 function BatteryGauge(Div, Options){
     scale = Options.scale;
     divisions = Options.divisions;
-    chargedVoltage = Options.chargedVoltage;
-    dischargedVoltage = Options.dischargedVoltage;
     div = Div;
     strokeWidth = Options.strokeWidth;
     strokeColour = Options.strokeColour;
