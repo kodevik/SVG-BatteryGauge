@@ -1,5 +1,5 @@
 # SVG-BatteryGauge
-A simple SVG/Javascript battery gauge which displays percentage charge given a voltage range and a voltage.  
+A simple SVG/Javascript battery gauge which displays percentage charge given a voltage.  
 ## Initialisation  
 To initialise a new BatteryGauge, you must declare it as an object with the parameters as below:
 ```
