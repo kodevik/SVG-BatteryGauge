@@ -9,8 +9,6 @@ let battery = new BatteryGauge(Div, Options);
 * Options - An object containing the settings for your battery. These settings are as follows:
     * scale - The scale of the battery to be drawn.
     * divisions - The number of battery bars.
-    * chargedVoltage - The voltage of the battery when fully charged.
-    * dischargedVoltage - The voltage of the battery when fully discharged.
     * strokeWidth - The thickness of the outline of the battery.
     * strokeColour - The colour of the outline of the battery.
     * bgColour - The background colour of the battery
