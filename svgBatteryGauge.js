@@ -5,6 +5,8 @@ SVGBatteryGauge - by Viktor Sarychkin
 function BatteryGauge(Div, Options){
     scale = Options.scale;
     divisions = Options.divisions;
+    chargedVoltage = Options.chargedVoltage;
+    dischargedVoltage = Options.dischargedVoltage;
     div = Div;
     strokeWidth = Options.strokeWidth;
     strokeColour = Options.strokeColour;
@@ -60,6 +62,7 @@ BatteryGauge.prototype.voltToPercentage = function(volts, mode=''){
 }
 BatteryGauge.prototype.update = function(voltage){
     var svgBars = ''; // empty string for svg content to be appended to
+	var chrg = mode=='12v_LiFePO4' ? 14.4 : 12.7;
     var distance = 35.5/divisions; // distance between percentage bars is the height of the battery at 1x scale divided by the number of bars intended
     var rectHeight = distance-0.5; // height of each percentage bar is the distance between them with 0.5px taken off for a border
     var percent = this.voltToPercentage(voltage, mode); // converting the voltage given to a percentage
@@ -67,7 +70,8 @@ BatteryGauge.prototype.update = function(voltage){
     for (i=skip; i < divisions; i++){ // iterating through the range between skip and divisions
         var y = 7.5+distance*i; // y value of the rectangle, with y:7.5px being the y coordinate of the topmost bar at 100%
         if (i==skip){
-            svgBars += '<g><rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" /><text id="top" style="font-family: Arial; font-size: 3px" x="50%" y="'+(y+(5/divisions)*4+0.5)+'" text-anchor="middle">'+percent+'%</text></g>'; // putting the percentage value in the top bar
+			col = voltage>chrg ? 'red' : this.numToColour(percent); // if voltage is above 100% make top bar red
+            svgBars += '<g><rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ col +';fill-rule:evenodd;" /><text id="top" style="font-family: Arial; font-size: 3px" x="50%" y="'+(y+(5/divisions)*4+0.5)+'" text-anchor="middle">'+percent+'%</text></g>'; // putting the percentage value in the top bar
         }
         else{
             svgBars += '<rect x="6" y="'+ y+'" width="18" height="'+rectHeight+'" style="fill:'+ this.numToColour(percent)+';fill-rule:evenodd;" />';
